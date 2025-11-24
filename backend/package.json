@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
-   "scripts": {
+  "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
     "build": "tsc ./server.ts --outDir ./JS --module commonjs --target ES2020 --esModuleInterop",
     "start": "node ./JS/server.js",
@@ -14,11 +14,13 @@
   "license": "ISC",
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "morgan": "^1.10.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
-    "@types/morgan": "^1.9.10"
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.10.1"
   }
 }
