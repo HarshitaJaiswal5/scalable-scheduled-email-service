@@ -36,3 +36,5 @@ Thumbs.db
 
 # Lint/cache
 .eslintcache
+
+db/prisma/generated/

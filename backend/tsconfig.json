@@ -14,6 +14,17 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022"
-  }
+    "target": "ES2022",
+    "outDir": "./JS"
+  },
+   "include": [
+    "server.ts",
+    "services/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "JS",
+    "db/prisma/generated",
+    ".pnpm"
+  ]
 }

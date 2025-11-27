@@ -1,0 +1,7 @@
+model schedule {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  reminderTime DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
