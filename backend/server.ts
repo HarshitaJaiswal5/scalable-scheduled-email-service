@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
 import { prisma } from "./db/prisma.js";
+import { scheduleReminderLambda } from "./services/scheduler.js";
 
 interface CreateScheduleBody {
   email?: string;
@@ -50,6 +51,8 @@ app.post(
           reminderTime: reminderUtcISO,
         },
       });
+
+      await scheduleReminderLambda(reminder);
 
       return res.status(201).json({
         message: "Reminder created",

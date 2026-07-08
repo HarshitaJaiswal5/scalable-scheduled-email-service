@@ -1,8 +1,11 @@
-import { SchedulerClient, CreateScheduleCommand } from "@aws-sdk/client-scheduler";
+import {
+  SchedulerClient,
+  CreateScheduleCommand,
+} from "@aws-sdk/client-scheduler";
 import type { schedule } from "../db/prisma/generated/prisma/client/client.js";
 
 const schedulerClient = new SchedulerClient({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_REGION_NAME,
 });
 
 export async function scheduleReminderLambda(schedule: schedule) {
@@ -11,26 +14,60 @@ export async function scheduleReminderLambda(schedule: schedule) {
     return;
   }
 
-  // use schedule, not reminder
-  const scheduleName = `reminder-${schedule.id}`;
+  const date = new Date(schedule.reminderTime);
+  if (isNaN(date.getTime())) {
+    console.error("Invalid reminderTime:", schedule.reminderTime);
+    throw new Error("Invalid reminderTime");
+  }
 
-  // make sure this matches your Prisma field name: `reminder`
-  const iso = schedule.reminderTime.toISOString().replace(/\.\d{3}Z$/, "Z");
+  // get hour and minute in Asia/Kolkata
+  const options = { timeZone: "Asia/Kolkata", hour12: false } as const;
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    ...options,
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(date);
+
+  const hourPart = parts.find((p) => p.type === "hour")?.value;
+  const minutePart = parts.find((p) => p.type === "minute")?.value;
+
+  if (!hourPart || !minutePart) {
+    console.error("Could not extract hour/minute from date:", date);
+    throw new Error("Invalid time conversion");
+  }
+
+  const hour = String(Number(hourPart)); // remove any leading zeros
+  const minute = String(Number(minutePart));
+
+  // build cron for daily at that hour:minute in Asia/Kolkata
+  const cronExpr = `cron(${minute} ${hour} * * ? *)`;
+
+  console.log("User time (raw):", schedule.reminderTime);
+  console.log("Daily cron expression:", cronExpr, "Timezone=Asia/Kolkata");
+
+  const scheduleName = `reminder-${schedule.id}`;
 
   const command = new CreateScheduleCommand({
     Name: scheduleName,
-    ScheduleExpression: `at(${iso})`,
+    ScheduleExpression: cronExpr,
+    ScheduleExpressionTimezone: "Asia/Kolkata",
     FlexibleTimeWindow: { Mode: "OFF" },
     Target: {
       Arn: process.env.REMINDER_LAMBDA_ARN,
       RoleArn: process.env.SCHEDULER_ROLE_ARN,
       Input: JSON.stringify({
-        // this key name is up to you, but the value must come from schedule
         reminderId: schedule.id,
         email: schedule.email,
       }),
     },
   });
 
-  await schedulerClient.send(command);
+  try {
+    console.log("🔍 Sending CreateScheduleCommand...");
+    await schedulerClient.send(command);
+    console.log("✅ Schedule created successfully (cron):", cronExpr);
+  } catch (err: any) {
+    console.error("Error creating reminder:", err);
+    throw err;
+  }
 }
