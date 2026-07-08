@@ -18,13 +18,10 @@
     "outDir": "./JS"
   },
    "include": [
-    "server.ts",
-    "services/**/*.ts"
+    "worker.ts",
   ],
   "exclude": [
     "node_modules",
     "JS",
-    "db/prisma/generated",
-    ".pnpm"
   ]
 }

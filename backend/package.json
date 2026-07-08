@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
-   "scripts": {
+  "type": "module",
+  "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
-    "build": "tsc ./server.ts --outDir ./JS --module commonjs --target ES2020 --esModuleInterop",
+    "build": "tsc -p tsconfig.json",
     "start": "node ./JS/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,11 +15,24 @@
   "license": "ISC",
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
+    "@aws-sdk/client-scheduler": "^3.940.0",
+    "@aws-sdk/client-ses": "^3.940.0",
+    "@aws-sdk/client-sqs": "^3.940.0",
+    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/client": "^7.0.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "p-limit": "^7.2.0",
+    "p-retry": "^7.1.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
-    "@types/morgan": "^1.9.10"
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
+    "prisma": "^7.0.1",
+    "typescript": "^5.9.3"
   }
 }

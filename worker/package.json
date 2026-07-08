@@ -1,0 +1,27 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only ./worker.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./JS/worker.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.16.1",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.940.0",
+    "@aws-sdk/client-sqs": "^3.940.0",
+    "dotenv": "^17.2.3",
+    "p-limit": "^7.2.0",
+    "p-retry": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1"
+  }
+}
