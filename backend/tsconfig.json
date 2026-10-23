@@ -24,7 +24,7 @@
   "exclude": [
     "node_modules",
     "JS",
-    "db/prisma/generated",
+    "db/generated",
     ".pnpm"
   ]
 }

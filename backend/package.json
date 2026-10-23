@@ -5,7 +5,7 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
+    "dev": "tsx watch ./server.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node ./JS/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,6 +20,7 @@
     "@aws-sdk/client-sqs": "^3.940.0",
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "^7.0.1",
+    "@prisma/client-runtime-utils": "7.0.1",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "morgan": "^1.10.1",
@@ -33,6 +34,9 @@
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
     "prisma": "^7.0.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }

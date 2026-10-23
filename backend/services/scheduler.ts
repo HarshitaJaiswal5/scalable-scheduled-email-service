@@ -2,7 +2,7 @@ import {
   SchedulerClient,
   CreateScheduleCommand,
 } from "@aws-sdk/client-scheduler";
-import type { schedule } from "../db/prisma/generated/prisma/client/client.js";
+import type { schedule } from "../db/schema/generated/prisma/client/client.js";
 
 const schedulerClient = new SchedulerClient({
   region: process.env.AWS_REGION_NAME,

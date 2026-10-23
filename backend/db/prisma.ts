@@ -1,4 +1,4 @@
-import { PrismaClient } from "../db/prisma/generated/prisma/client/client.js";
+import { PrismaClient } from "./schema/generated/prisma/client/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import dotenv from "dotenv";
@@ -15,3 +15,4 @@ const adapter = new PrismaPg(pool);
 export const prisma = new PrismaClient({
   adapter,
 });
+
